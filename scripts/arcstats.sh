@@ -31,10 +31,10 @@ dnode_cache_size=$(echo "$arc_summary" | grep "Dnode cache size (current)" | awk
 arc_utilization=$(
 	printf "|ARC Size:|%s|%s (Max)\n" "$arc_size" "$max_arc_size"
 	printf "|Hit Ratio:|$hit_ratio %%\n"
-    printf "|MFU Size:|$mfu_size \n"
-    printf "|MRU Size:|$mru_size \n"
-    printf "|Metadata Cache Size:|$metadata_cache_size \n"
-    printf "|Dnode Cache Size:|$dnode_cache_size \n"
+	printf "|MFU Size:|$mfu_size \n"
+	printf "|MRU Size:|$mru_size \n"
+	printf "|Metadata Cache Size:|$metadata_cache_size \n"
+	printf "|Dnode Cache Size:|$dnode_cache_size \n"
 )
 
 
@@ -66,6 +66,7 @@ l2arc_stats=$(
 	echo "|L2ARC Size (compressed):|$l2arc_size_compressed"
 	echo "|L2ARC Hit Ratio:|$l2arc_hit_ratio"
 )
+
 
 # print final output in table format
 column -t -s '|' <<< $(
