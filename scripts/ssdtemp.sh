@@ -3,7 +3,7 @@
 output=$(
         for disk in ${ssds[@]}; do
                 realpath=$(realpath "/dev/disk/by-id/$disk")
-                ssdtemp=$(sudo hddtemp -D "$realpath" | grep "field(190)" | awk '{ print $3 }')
+                ssdtemp=$(sudo hddtemp -D "$realpath" | awk '$0 ~ /field\(190\)/ { print $3 }')
 
                 printf "$realpath: $ssdtemp\u00b0C|[$disk]\n"
         done

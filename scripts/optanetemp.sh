@@ -5,7 +5,7 @@ source $dir/../config.sh
 
 
 for disk in ${optanedrives[@]}; do
-	temp=$(sensors $disk | grep Composite | awk '{ print $2 }')
+	temp=$(sensors $disk | awk '$0 ~ /Composite/ { print $2 }')
 	printf "%s:\t%s\n" "$disk" "$temp"
 done
 

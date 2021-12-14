@@ -41,8 +41,8 @@ arc_utilization=$(
 # get the size and number of transactions written to the SLOG pool
 slog_transaction_size=$(/sbin/arc_summary -s zil | grep "Transactions to SLOG storage pool" | awk '{ print $6 " " $7 "|" $8 " " $9 }')
 
-slog_transaction_count=$(cat "$zilstats_file" | grep "zil_itx_metaslab_slog_count" | awk '{ print $3 }')
-slog_transaction_bytes=$(cat "$zilstats_file" | grep "zil_itx_metaslab_slog_bytes" | awk '{ print $3 }')
+slog_transaction_count=$(cat "$zilstats_file" | awk '$0 ~ /zil_itx_metaslab_slog_count/ { print $3 }')
+slog_transaction_bytes=$(cat "$zilstats_file" | awk '$0 ~ /zil_itx_metaslab_slog_bytes/ { print $3 }')
 
 # calculate transactions and bytes per second
 uptime=$(cat /proc/uptime | awk '{ print $1 }')
@@ -57,9 +57,9 @@ zil_utilization=$(
 
 
 # get the size and hit ratio of the L2ARC
-l2arc_size=$(/sbin/arc_summary -s l2arc | grep "L2ARC size (adaptive)" | awk '{ print $4 " " $5 }')
-l2arc_size_compressed=$(/sbin/arc_summary -s l2arc | grep "Compressed" | awk '{ print $4 " " $5 "|" $2 " " $3 }')
-l2arc_hit_ratio=$(/sbin/arc_summary -s l2arc | grep "Hit ratio" | awk '{ print $3 " " $4 "|" $5 }')
+l2arc_size=$(/sbin/arc_summary -s l2arc | awk '$0 ~ /L2ARC size \(adaptive\)/ { print $4 " " $5 }')
+l2arc_size_compressed=$(/sbin/arc_summary -s l2arc | awk '$0 ~ /Compressed/ { print $4 " " $5 "|" $2 " " $3 }')
+l2arc_hit_ratio=$(/sbin/arc_summary -s l2arc | awk '$0 ~ /Hit ratio/ { print $3 " " $4 "|" $5 }')
 
 l2arc_stats=$(
 	echo "|L2ARC Size:|$l2arc_size"
