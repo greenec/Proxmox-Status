@@ -13,11 +13,17 @@ $dir/scripts/cpuinfo.sh | sed 's/^/\t/'
 printf "\nWD Red HDD Temperatures:\n"
 $dir/scripts/hddtemp.sh | sed 's/^/\t/'
 
-printf "\nSSD Temperatures:\n"
-$dir/scripts/ssdtemp.sh | sed 's/^/\t/'
+ssdtemp=$($dir/scripts/ssdtemp.sh)
+if [ ! -z "$ssdtemp" ]; then
+	printf "\nSSD Temperatures:\n"
+	sed 's/^/\t/' <<< "$ssdtemp"
+fi
 
-printf "\nIntel Optane SLOG Temperatures:\n"
-$dir/scripts/optanetemp.sh | sed 's/^/\t/'
+optanetemp=$($dir/scripts/optanetemp.sh)
+if [ ! -z "$optanetemp" ]; then
+	printf "\nIntel Optane SLOG Temperatures:\n"
+	sed 's/^/\t/' <<< "$optanetemp"
+fi
 
 printf "\nZFS Adaptive Read Cache Stats:\n"
 $dir/scripts/arcstats.sh | sed 's/^/\t/'

@@ -71,6 +71,12 @@ l2arc_stats=$(
 # print final output in table format
 column -t -s '|' <<< $(
 	printf "ARC Stats:\n%s\n" "$arc_utilization"
-	printf "ZIL Stats:\n%s\n" "$zil_utilization"
-	printf "L2ARC Stats:\n%s\n" "$l2arc_stats"
+
+	if [ ! "$slog_transaction_size" = "0" ]; then
+		printf "ZIL Stats:\n%s\n" "$zil_utilization"
+	fi
+
+	if [ ! -z "$l2arc_size" ]; then
+		printf "L2ARC Stats:\n%s\n" "$l2arc_stats"
+	fi
 )
