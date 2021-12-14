@@ -72,7 +72,7 @@ l2arc_stats=$(
 column -t -s '|' <<< $(
 	printf "ARC Stats:\n%s\n" "$arc_utilization"
 
-	if [ ! "$slog_transaction_size" = "0" ]; then
+	if [[ ! "$slog_transaction_size" =~ 0.* ]]; then
 		printf "ZIL Stats:\n%s\n" "$zil_utilization"
 	fi
 
