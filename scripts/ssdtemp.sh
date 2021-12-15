@@ -1,5 +1,9 @@
 #!/bin/bash
 
+dir=$(dirname $(realpath "$0"))
+source $dir/../config.sh
+
+
 output=$(
         for disk in ${ssds[@]}; do
                 realpath=$(realpath "/dev/disk/by-id/$disk")
