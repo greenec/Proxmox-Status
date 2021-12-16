@@ -39,10 +39,10 @@ arc_utilization=$(
 
 
 # get the size and number of transactions written to the SLOG pool
-slog_transaction_size=$(/sbin/arc_summary -s zil | grep "Transactions to SLOG storage pool" | awk '{ print $6 " " $7 "|" $8 " " $9 }')
+slog_transaction_size=$(/sbin/arc_summary -s zil | awk '$0 ~ /Transactions to SLOG storage pool/ { print $6 " " $7 "|" $8 " " $9 }')
 
-slog_transaction_count=$(cat "$zilstats_file" | awk '$0 ~ /zil_itx_metaslab_slog_count/ { print $3 }')
-slog_transaction_bytes=$(cat "$zilstats_file" | awk '$0 ~ /zil_itx_metaslab_slog_bytes/ { print $3 }')
+slog_transaction_count=$(cat "$zilstats_file" | awk '{ if ($1 == "zil_itx_metaslab_slog_count") print $3 }')
+slog_transaction_bytes=$(cat "$zilstats_file" | awk '{ if ($1 == "zil_itx_metaslab_slog_bytes") print $3 }')
 
 # calculate transactions and bytes per second
 uptime=$(cat /proc/uptime | awk '{ print $1 }')
@@ -72,7 +72,7 @@ l2arc_stats=$(
 column -t -s '|' <<< $(
 	printf "ARC Stats:\n%s\n" "$arc_utilization"
 
-	if [[ ! "$slog_transaction_size" =~ 0.* ]]; then
+	if [ "$slog_transaction_count" != "0" ]; then
 		printf "ZIL Stats:\n%s\n" "$zil_utilization"
 	fi
 
