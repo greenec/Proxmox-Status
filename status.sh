@@ -10,10 +10,10 @@ dir=$(dirname $(realpath "$0"))
 printf "\nCPU Load / Temperature:\n"
 $dir/scripts/cpuinfo.sh | sed 's/^/\t/'
 
-printf "\nWD Red HDD Temperatures:\n"
-$dir/scripts/hddtemp.sh | sed 's/^/\t/'
+printf "\nHard Drive Temperatures:\n"
+$dir/scripts/disktemp.sh harddisks | sed 's/^/\t/'
 
-ssdtemp=$($dir/scripts/ssdtemp.sh)
+ssdtemp=$($dir/scripts/disktemp.sh ssds)
 if [ ! -z "$ssdtemp" ]; then
 	printf "\nSSD Temperatures:\n"
 	sed 's/^/\t/' <<< "$ssdtemp"

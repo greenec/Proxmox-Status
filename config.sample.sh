@@ -17,5 +17,16 @@ ssds=(	"ata-Samsung_SSD_860_EVO_500GB_T"
 		"ata-Samsung_SSD_860_PRO_256GB_X"
 		"ata-Samsung_SSD_860_PRO_256GB_W" )
 
+
+
+# sample output from sensors
+# k10temp-pci-00c3
+# Adapter: PCI adapter
+# Tctl:         +53.5°C
+# Tdie:         +53.5°C
+# Tccd1:        +42.8°C
+
 cpu_temp_device="k10temp-pci-00c3"
+cpu_temp_field_label="Tdie"
+cpu_temp_awk_print_fmt="\$2"
 

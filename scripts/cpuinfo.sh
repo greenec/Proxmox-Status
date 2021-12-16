@@ -10,6 +10,6 @@ awk '{ print( "Load average:\t" $1 " (1m)\t" $2 " (5m)\t" $3 " (15m)" ) }' < /pr
 echo
 
 
-temp=$(sensors $cpu_temp_device | awk '$0 ~ /Tdie/ { print $2 }')
+temp=$(sensors $cpu_temp_device | awk "\$0 ~ /$cpu_temp_field_label/ { print $cpu_temp_awk_print_fmt }")
 printf "%s:\t%s\n" "$cpu_temp_device" "$temp"
 
