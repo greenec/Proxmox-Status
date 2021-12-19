@@ -10,6 +10,12 @@ dir=$(dirname $(realpath "$0"))
 printf "\nCPU Load / Temperature:\n"
 $dir/scripts/cpuinfo.sh | sed 's/^/\t/'
 
+apcstats=$($dir/scripts/apcstats.sh)
+if [ ! -z "$apcstats" ]; then
+	printf "\nUPS Stats:\n"
+	$dir/scripts/apcstats.sh | sed 's/^/\t/'
+fi
+
 printf "\nHard Drive Temperatures:\n"
 $dir/scripts/disktemp.sh harddisks | sed 's/^/\t/'
 
