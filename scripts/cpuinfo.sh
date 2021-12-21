@@ -4,7 +4,7 @@ dir=$(dirname "$(realpath "$0")")
 source "$dir/../config.sh"
 
 # print cpu temperature
-temp=$(sensors $cpu_temp_device | awk -v cpu_temp_field_label="$cpu_temp_field_label" -v cpu_temp_awk_print_fmt="$cpu_temp_awk_print_fmt" 'match($0, cpu_temp_field_label) { print $cpu_temp_awk_print_fmt }')
+temp=$(sensors "$cpu_temp_device" | awk -v field_label="$cpu_temp_field_label" -v print_fmt="$cpu_temp_awk_print_fmt" 'match($0, field_label) { print $print_fmt }')
 
 column -t -s '|' <<< "$(
 	# print load average info

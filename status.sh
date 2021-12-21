@@ -6,11 +6,12 @@ sudo echo 0 > /dev/null
 dir=$(dirname "$(realpath "$0")")
 source "$dir/config.sh"
 
-if [[ "${show_screenfetch}" = true ]]; then
+if [[ "$show_screenfetch" = true ]]; then
 	screenfetch
+	printf "\n"
 fi
 
-printf "\nCPU Load / Temperature:\n"
+printf "CPU Load / Temperature:\n"
 "$dir/scripts/cpuinfo.sh" | sed 's/^/\t/'
 
 apcstats=$("$dir/scripts/apcstats.sh")
