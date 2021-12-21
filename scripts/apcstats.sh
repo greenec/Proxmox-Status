@@ -14,7 +14,7 @@ time_left=$(awk '{ if ($1 == "TIMELEFT") { print $3 " " $4 } }' <<< "$ups_info")
 
 power=$(bc <<< "scale=2; $nominal_power * $load_percent / 100.0")
 
-column -t -s '|' <<< $(
+column -t -s '|' <<< "$(
 	echo "APC UPS Draw:|$power $power_unit ($load_percent %)"
 	echo "Time Remaining:|$time_left"
-)
+)"

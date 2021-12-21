@@ -28,5 +28,6 @@ ssds=(	"ata-Samsung_SSD_860_EVO_500GB_T"
 
 cpu_temp_device="k10temp-pci-00c3"
 cpu_temp_field_label="Tdie"
-cpu_temp_awk_print_fmt="\$2"
+cpu_temp_awk_print_fmt="2"
 
+show_screenfetch=true
