@@ -3,34 +3,37 @@
 # elevate to root before doing anything so the sudo prompt doesn't disrupt the script 
 sudo echo 0 > /dev/null
 
-screenfetch
+dir=$(dirname "$(realpath "$0")")
+source "$dir/config.sh"
 
-dir=$(dirname $(realpath "$0"))
+if [[ "${show_screenfetch}" = true ]]; then
+	screenfetch
+fi
 
 printf "\nCPU Load / Temperature:\n"
-$dir/scripts/cpuinfo.sh | sed 's/^/\t/'
+"$dir/scripts/cpuinfo.sh" | sed 's/^/\t/'
 
-apcstats=$($dir/scripts/apcstats.sh)
-if [ ! -z "$apcstats" ]; then
+apcstats=$("$dir/scripts/apcstats.sh")
+if [ -n "$apcstats" ]; then
 	printf "\nUPS Stats:\n"
-	$dir/scripts/apcstats.sh | sed 's/^/\t/'
+	sed 's/^/\t/' <<< "$apcstats"
 fi
 
 printf "\nHard Drive Temperatures:\n"
-$dir/scripts/disktemp.sh harddisks | sed 's/^/\t/'
+"$dir/scripts/disktemp.sh" harddisks | sed 's/^/\t/'
 
-ssdtemp=$($dir/scripts/disktemp.sh ssds)
-if [ ! -z "$ssdtemp" ]; then
+ssdtemp=$("$dir/scripts/disktemp.sh" ssds)
+if [ -n "$ssdtemp" ]; then
 	printf "\nSSD Temperatures:\n"
 	sed 's/^/\t/' <<< "$ssdtemp"
 fi
 
-optanetemp=$($dir/scripts/optanetemp.sh)
-if [ ! -z "$optanetemp" ]; then
+optanetemp=$("$dir/scripts/optanetemp.sh")
+if [ -n "$optanetemp" ]; then
 	printf "\nIntel Optane SLOG Temperatures:\n"
 	sed 's/^/\t/' <<< "$optanetemp"
 fi
 
 printf "\nZFS Adaptive Read Cache Stats:\n"
-$dir/scripts/arcstats.sh | sed 's/^/\t/'
+"$dir/scripts/arcstats.sh" | sed 's/^/\t/'
 
