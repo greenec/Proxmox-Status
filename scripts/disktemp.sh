@@ -22,7 +22,7 @@ output=$(
 
 			printf "%s: %s: %s\u00b0C|[%s]\n" "$realpath" "$diskname" "$ssdtemp" "$disk"
 		else
-			printf "%s:|[%s]\n" "$hddtemp" "$disk"
+			printf "%s|[%s]\n" "$hddtemp" "$disk"
 		fi
 	done
 )
