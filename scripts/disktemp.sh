@@ -20,9 +20,11 @@ output=$(
 			ssdtemp=$(sudo hddtemp -D "$realpath" | awk '/field\(190\)/ { print $3 }')
 			diskname=$(sudo smartctl -a "$realpath" | sed -n 's/Device Model:\s*\(.*\)/\1/p')
 
-			printf "%s: %s: %s\u00b0C|[%s]\n" "$realpath" "$diskname" "$ssdtemp" "$disk"
+			printf "%s:|%s:|%s\u00b0C:|[%s]\n" "$realpath" "$diskname" "$ssdtemp" "$disk"
 		else
-			printf "%s|[%s]\n" "$hddtemp" "$disk"
+			# add a '|' after each colon so column can align fields to the table
+			delimited_hddtemp=$(sed -e 's/:\s*/:|/g' <<< "$hddtemp")
+			printf "%s:|[%s]\n" "$delimited_hddtemp" "$disk"
 		fi
 	done
 )
