@@ -6,13 +6,16 @@ sudo echo 0 > /dev/null
 dir=$(dirname "$(realpath "$0")")
 source "$dir/config.sh"
 
+# measure CPU temp before running screenfetch so it's more accurate
+cpuinfo=$("$dir/scripts/cpuinfo.sh")
+
 if [[ "$show_screenfetch" = true ]]; then
 	screenfetch
 	printf "\n"
 fi
 
 printf "CPU Load / Temperature:\n"
-"$dir/scripts/cpuinfo.sh" | sed 's/^/\t/'
+sed 's/^/\t/' <<< "$cpuinfo"
 
 apcstats=$("$dir/scripts/apcstats.sh")
 if [ -n "$apcstats" ]; then
