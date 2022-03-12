@@ -32,6 +32,12 @@ if [ -n "$ssdtemp" ]; then
 	sed 's/^/\t/' <<< "$ssdtemp"
 fi
 
+nvmetemp=$("$dir/scripts/nvmetemp.sh")
+if [ -n "$nvmetemp" ]; then
+	printf "\nNVMe SSD Temperatures:\n"
+	sed 's/^/\t/' <<< "$nvmetemp"
+fi
+
 optanetemp=$("$dir/scripts/optanetemp.sh")
 if [ -n "$optanetemp" ]; then
 	printf "\nIntel Optane SLOG Temperatures:\n"
