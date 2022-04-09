@@ -29,6 +29,6 @@ output=$(
 	done
 )
 
-# sort output by disk letter, e.g. /dev/sda
-printf "%s" "$output" | sort | column -t -s '|'
+# sort output by disk model, e.g. WDC WD40EFRX-68N32N0
+printf "%s" "$output" | sort -k 2 | column -t -s '|'
 
