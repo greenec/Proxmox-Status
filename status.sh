@@ -26,8 +26,11 @@ if [ -n "$apcstats" ]; then
 	sed 's/^/\t/' <<< "$apcstats"
 fi
 
-printf "\n${CYAN}Hard Drive Temperatures:${NC}\n"
-"$dir/scripts/disktemp.sh" harddisks | sed 's/^/\t/'
+hddtemp=$("$dir/scripts/disktemp.sh" harddisks)
+if [ -n "$hddtemp" ]; then
+	printf "\n${CYAN}Hard Drive Temperatures:${NC}\n"
+	sed 's/^/\t/' <<< "$hddtemp"
+fi
 
 ssdtemp=$("$dir/scripts/disktemp.sh" ssds)
 if [ -n "$ssdtemp" ]; then
