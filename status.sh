@@ -50,6 +50,8 @@ if [ -n "$optanetemp" ]; then
 	sed 's/^/\t/' <<< "$optanetemp"
 fi
 
-printf "\n${CYAN}ZFS Adaptive Read Cache Stats:${NC}\n"
-"$dir/scripts/arcstats.sh" | sed 's/^/\t/'
-
+arcstats=$("$dir/scripts/arcstats.sh")
+if [ -n "$arcstats" ]; then
+	printf "\n${CYAN}ZFS Adaptive Read Cache Stats:${NC}\n"
+	"$dir/scripts/arcstats.sh" | sed 's/^/\t/'
+fi

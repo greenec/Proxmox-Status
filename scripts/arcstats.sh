@@ -3,6 +3,10 @@
 arcstats_file="/proc/spl/kstat/zfs/arcstats"
 zilstats_file="/proc/spl/kstat/zfs/zil"
 
+if [ ! -f "$arcstats_file" ]; then
+    exit
+fi
+
 numfmt_bytes="numfmt --to=iec-i --suffix=B --format=%0.1f"
 
 # add a space between the number and unit, e.g. 53GiB -> 53 GiB
