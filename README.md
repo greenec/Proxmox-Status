@@ -14,4 +14,4 @@ A bash script to gather system metrics like temperatures and ARC utilization tha
 4. There are some aspects of the status which are implicitly configured.  
 4.1 **APC UPS Users** - If you are on an APC brand UPS and have `apcupsd` installed with a USB serial connection to the UPS, it can read the status of you battery and show current draw in Watts and as a percentage of its VA rating. It will also show time remaining in the event of a power outage.  
 4.2 **ZFS Users** - `arcstats.sh` does a lot of heavy lifting to determine if you have an `arcstats` file on your system, and in turn if you have a SLOG or L2ARC and shows additional sections for them if possible.
-5. Test by running ./status.sh and checking that the output shows all of your disks, CPU temp, and ARC stats correctly
+5. Test by running `./status.sh` and checking that the output shows all of your disks, CPU temp, and ARC stats correctly
