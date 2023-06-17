@@ -51,7 +51,7 @@ if [ -n "$optanetemp" ]; then
 fi
 
 arcstats=$("$dir/scripts/arcstats.sh")
-if [ -n "$arcstats" ]; then
+if [ $? -eq 0 ] && [ -n "$arcstats" ]; then
 	printf "\n${CYAN}ZFS Adaptive Read Cache Stats:${NC}\n"
 	"$dir/scripts/arcstats.sh" | sed 's/^/\t/'
 fi

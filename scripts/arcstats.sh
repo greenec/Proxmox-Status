@@ -21,6 +21,12 @@ max_arc_size=$(awk '{ if ($1 == "c_max") print $3 }' "$arcstats_file" | $numfmt_
 hits=$(awk '{ if ($1 == "hits") print $3 }' "$arcstats_file")
 misses=$(awk '{ if ($1 == "misses") print $3 }' "$arcstats_file")
 total_arc_requests=$(( hits + misses ))
+
+# exit if ARC cache has not been used
+if [ "$total_arc_requests" -eq 0 ]; then
+    exit 1
+fi
+
 hit_ratio=$( bc <<< "scale=2; $hits * 100 / $total_arc_requests" )
 
 
