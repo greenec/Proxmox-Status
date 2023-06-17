@@ -4,7 +4,7 @@ arcstats_file="/proc/spl/kstat/zfs/arcstats"
 zilstats_file="/proc/spl/kstat/zfs/zil"
 
 if [ ! -f "$arcstats_file" ]; then
-    exit
+    exit 1
 fi
 
 numfmt_bytes="numfmt --to=iec-i --suffix=B --format=%0.1f"
