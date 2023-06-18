@@ -9,7 +9,11 @@ source "$dir/../config.sh"
 header_printed=false
 
 for disk in "${harddisks[@]}"; do
-	smartctl=$(sudo smartctl -a "/dev/disk/by-id/$disk")
+	smartctl_cmd="/sbin/smartctl -a /dev/disk/by-id/$disk"
+	if [ "$EUID" -ne 0 ]; then
+		smartctl_cmd="sudo $smartctl_cmd"
+	fi
+	smartctl=$(eval "$smartctl_cmd")
 
 	if [ "$header_printed" = false ]; then
 		echo "$smartctl" | grep 'ID#'
