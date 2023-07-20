@@ -1,7 +1,7 @@
 #!/bin/bash
 
 sudo apt update
-sudo apt install screenfetch lm-sensors hddtemp 
+sudo apt install screenfetch lm-sensors smartmontools
 
 echo
 
