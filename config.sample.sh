@@ -14,10 +14,9 @@ ssds=(	"ata-Samsung_SSD_860_EVO_500GB_T"
 	"ata-Samsung_SSD_860_PRO_256GB_X"
 	"ata-Samsung_SSD_860_PRO_256GB_W" )
 
-nvmedrives=( )
+nvmedrives=(	"nvme-SAMSUNG_MZVLB256HBHQ-0")
 
-optanedrives=(	"nvme-pci-0100"
-		"nvme-pci-0400" )
+optanedrives=(	"nvme-INTEL_SSDPEK1A118GA_B" )
 
 
 
