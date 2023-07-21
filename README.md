@@ -5,7 +5,7 @@ A bash script to gather system metrics like temperatures and ARC utilization tha
 ![](samples/minotaur-status.png)
 
 ## Setup
-1. The install script adds 3 packages and expects you to be on Proxmox, a Debian-based system. It adds `screenfetch` `lm-sensors` and `hddtemp`. **If you are okay with this**, run `./installpkgs.sh` and follow the instructions printed at the end of the script
+1. The install script adds 3 packages and expects you to be on Proxmox, a Debian-based system. It adds `screenfetch` `lm-sensors` and `smartmontools`. **If you are okay with this**, run `./installpkgs.sh` and follow the instructions printed at the end of the script
 2. Copy `config.sample.sh` to `config.sh`
 3. Edit `config.sh` and replace the example variables with your system's disk and CPU names  
 3.1 **Configure Disks** - For ZFS users, you should be able to run `sudo zfs status` and see the name for each disk in your zpool that refers to its `/dev/disk/by-id/` path. You can leave the disk arrays empty or omit them entirely if you don't have mechanical drives or Optane drives, for example  
