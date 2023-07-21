@@ -44,7 +44,7 @@ if [ -n "$nvmetemp" ]; then
 	sed 's/^/\t/' <<< "$nvmetemp"
 fi
 
-optanetemp=$("$dir/scripts/optanetemp.sh")
+optanetemp=$("$dir/scripts/nvmetemp.sh" optane)
 if [ -n "$optanetemp" ]; then
 	printf "\n${CYAN}Intel Optane SLOG Temperatures:${NC}\n"
 	sed 's/^/\t/' <<< "$optanetemp"
