@@ -93,25 +93,28 @@ zil_utilization=$(
 
 
 # get the size and hit ratio of the L2ARC
-l2arc_size=$(awk '{ if ($1 == "l2_size") print $3 }' "$arcstats_file" | $numfmt_bytes | sed -E "$iec_space_regexp")
-l2arc_size_compressed=$(awk '{ if ($1 == "l2_asize") print $3 }' "$arcstats_file" | $numfmt_bytes | sed -E "$iec_space_regexp")
+l2arc_bytes=$(awk '{ if ($1 == "l2_size") print $3 }' "$arcstats_file")
+if [ "$l2arc_bytes" -ne 0 ]; then
+	l2arc_size=$($numfmt_bytes <<< "$l2arc_bytes" | sed -E "$iec_space_regexp")
+	l2arc_size_compressed=$(awk '{ if ($1 == "l2_asize") print $3 }' "$arcstats_file" | $numfmt_bytes | sed -E "$iec_space_regexp")
 
-# calculate L2ARC hit ratio
-l2_hits=$(awk '{ if ($1 == "l2_hits") print $3 }' "$arcstats_file")
-l2_misses=$(awk '{ if ($1 == "l2_misses") print $3 }' "$arcstats_file")
-total_l2_arc_requests=$(( l2_hits + l2_misses ))
-l2arc_hit_ratio=$( bc <<< "scale=2; $l2_hits * 100 / $total_l2_arc_requests" )
+	# calculate L2ARC hit ratio
+	l2_hits=$(awk '{ if ($1 == "l2_hits") print $3 }' "$arcstats_file")
+	l2_misses=$(awk '{ if ($1 == "l2_misses") print $3 }' "$arcstats_file")
+	total_l2_arc_requests=$(( l2_hits + l2_misses ))
+	l2arc_hit_ratio=$( bc <<< "scale=2; $l2_hits * 100 / $total_l2_arc_requests" )
 
-l2arc_stats=$(
-	echo "|L2ARC Size:|$l2arc_size"
-	echo "|L2ARC Size (compressed):|$l2arc_size_compressed"
+	l2arc_stats=$(
+		echo "|L2ARC Size:|$l2arc_size"
+		echo "|L2ARC Size (compressed):|$l2arc_size_compressed"
 
-	printf "|L2ARC Hit Ratio:|$l2arc_hit_ratio"
-	if [ "$print_raw" = false ]; then
-		printf " %%"
-	fi
-	printf "\n"
-)
+		printf "|L2ARC Hit Ratio:|$l2arc_hit_ratio"
+		if [ "$print_raw" = false ]; then
+			printf " %%"
+		fi
+		printf "\n"
+	)
+fi
 
 output=$(
 	printf "ARC Stats:\n%s\n" "$arc_utilization"
@@ -120,7 +123,7 @@ output=$(
 		printf "ZIL Stats:\n%s\n" "$zil_utilization"
 	fi
 
-	if [ -n "$l2arc_size" ]; then
+	if [ -n "$l2arc_stats" ]; then
 		printf "L2ARC Stats:\n%s\n" "$l2arc_stats"
 	fi
 )
