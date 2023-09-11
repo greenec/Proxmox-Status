@@ -20,6 +20,11 @@ fi
 # add a space between the number and unit, e.g. 53GiB -> 53 GiB
 iec_space_regexp="s/([0-9])([A-Z])/\1 \2/"
 
+stat_name_suffix=":"
+if [ "$print_raw" = true ]; then
+	stat_name_suffix=""
+fi
+
 
 # get current and max ARC size
 arc_size=$(awk '{ if ($1 == "size") print $3 }' "$arcstats_file" | $numfmt_bytes | sed -E "$iec_space_regexp")
@@ -43,22 +48,22 @@ metadata_cache_size=$(awk '{ if ($1 == "arc_meta_used") print $3 }' "$arcstats_f
 dnode_cache_size=$(awk '{ if ($1 == "dnode_size") print $3 }' "$arcstats_file" | $numfmt_bytes | sed -E "$iec_space_regexp")
 
 arc_utilization=$(
-	printf "|ARC Size:|%s|%s" "$arc_size" "$max_arc_size"
+	printf "|ARC Size%s|%s|%s" "$stat_name_suffix" "$arc_size" "$max_arc_size"
 	if [ "$print_raw" = false ]; then
 		printf " (Max)"
 	fi
 	printf "\n"
 
-	printf "|Hit Ratio:|%s" "$hit_ratio"
+	printf "|Hit Ratio%s|%s" "$stat_name_suffix" "$hit_ratio"
 	if [ "$print_raw" = false ]; then
 		printf " %%"
 	fi
 	printf "\n"
 
-	printf "|MFU Size:|%s \n" "$mfu_size"
-	printf "|MRU Size:|%s \n" "$mru_size"
-	printf "|Metadata Cache Size:|%s \n" "$metadata_cache_size"
-	printf "|Dnode Cache Size:|%s \n" "$dnode_cache_size"
+	printf "|MFU Size%s|%s\n" "$stat_name_suffix" "$mfu_size"
+	printf "|MRU Size%s|%s\n" "$stat_name_suffix" "$mru_size"
+	printf "|Metadata Cache Size%s|%s\n" "$stat_name_suffix" "$metadata_cache_size"
+	printf "|Dnode Cache Size%s|%s\n" "$stat_name_suffix" "$dnode_cache_size"
 )
 
 
@@ -74,21 +79,19 @@ slog_tps=$( bc <<< "scale=1; $slog_transaction_count / $uptime"  )
 slog_bytes_per_sec=$( bc <<< "scale=2; $slog_transaction_bytes / $uptime" | $numfmt_bytes | sed -E "$iec_space_regexp" )
 
 zil_utilization=$(
-	printf "|ZIL SLOG Transactions:|%s \n" "$slog_transaction_size"
+	printf "|ZIL SLOG Transactions%s|%s\n" "$stat_name_suffix" "$slog_transaction_size"
 
-	printf "|ZIL SLOG TPS:|%s" "$slog_tps"
+	printf "|ZIL SLOG TPS%s|%s" "$stat_name_suffix" "$slog_tps"
 	if [ "$print_raw" = false ]; then
 		printf " itx/sec"
 	fi
 	printf "\n"
 
-	printf "|ZIL SLOG Writes:|%s" "$slog_bytes_per_sec"
+	printf "|ZIL SLOG Writes%s|%s" "$stat_name_suffix" "$slog_bytes_per_sec"
 	if [ "$print_raw" = false ]; then
 		printf "/sec"
 	fi
 	printf "\n"
-
-
 )
 
 
@@ -105,10 +108,10 @@ if [ "$l2arc_bytes" -ne 0 ]; then
 	l2arc_hit_ratio=$( bc <<< "scale=2; $l2_hits * 100 / $total_l2_arc_requests" )
 
 	l2arc_stats=$(
-		echo "|L2ARC Size:|$l2arc_size"
-		echo "|L2ARC Size (compressed):|$l2arc_size_compressed"
+		printf "|L2ARC Size%s|%s\n" "$stat_name_suffix" "$l2arc_size"
+		printf "|L2ARC Size (compressed)%s|%s\n" "$stat_name_suffix" "$l2arc_size_compressed"
 
-		printf "|L2ARC Hit Ratio:|$l2arc_hit_ratio"
+		printf "|L2ARC Hit Ratio%s|%s" "$stat_name_suffix" "$l2arc_hit_ratio"
 		if [ "$print_raw" = false ]; then
 			printf " %%"
 		fi
@@ -120,11 +123,11 @@ output=$(
 	printf "ARC Stats:\n%s\n" "$arc_utilization"
 
 	if [ "$slog_transaction_count" != "0" ]; then
-		printf "ZIL Stats:\n%s\n" "$zil_utilization"
+		printf "ZIL Stats%s\n%s\n" "$stat_name_suffix" "$zil_utilization"
 	fi
 
 	if [ -n "$l2arc_stats" ]; then
-		printf "L2ARC Stats:\n%s\n" "$l2arc_stats"
+		printf "L2ARC Stats%s\n%s\n" "$stat_name_suffix" "$l2arc_stats"
 	fi
 )
 
