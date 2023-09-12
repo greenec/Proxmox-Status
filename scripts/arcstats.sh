@@ -81,6 +81,10 @@ slog_bytes_per_sec=$( bc <<< "scale=2; $slog_transaction_bytes / $uptime" | $num
 zil_utilization=$(
 	printf "|ZIL SLOG Transactions%s|%s\n" "$stat_name_suffix" "$slog_transaction_size"
 
+	if [ "$print_raw" = true ]; then
+		printf "|ZIL SLOG Transaction Count|%s\n" "$slog_transaction_count"
+	fi
+
 	printf "|ZIL SLOG TPS%s|%s" "$stat_name_suffix" "$slog_tps"
 	if [ "$print_raw" = false ]; then
 		printf " itx/sec"
