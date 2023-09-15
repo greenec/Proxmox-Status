@@ -57,6 +57,9 @@ arc_utilization=$(
 	printf "|Hit Ratio%s|%s" "$stat_name_suffix" "$hit_ratio"
 	if [ "$print_raw" = false ]; then
 		printf " %%"
+	else
+		printf "\n|ARC Hits|%s" "$hits"
+		printf "\n|ARC Misses|%s" "$misses"
 	fi
 	printf "\n"
 
@@ -118,6 +121,9 @@ if [ "$l2arc_bytes" -ne 0 ]; then
 		printf "|L2ARC Hit Ratio%s|%s" "$stat_name_suffix" "$l2arc_hit_ratio"
 		if [ "$print_raw" = false ]; then
 			printf " %%"
+		else
+			printf "\n|L2ARC Hits|%s" "$l2_hits"
+			printf "\n|L2ARC Misses|%s" "$l2_misses"
 		fi
 		printf "\n"
 	)
