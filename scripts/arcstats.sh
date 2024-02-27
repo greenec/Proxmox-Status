@@ -114,6 +114,10 @@ if [ "$l2arc_bytes" -ne 0 ]; then
 	total_l2_arc_requests=$(( l2_hits + l2_misses ))
 	l2arc_hit_ratio=$( bc <<< "scale=2; $l2_hits * 100 / $total_l2_arc_requests" )
 
+	l2_header_size=$(awk '{ if ($1 == "l2_hdr_size") print $3 }' "$arcstats_file")
+	l2_read_bytes=$(awk '{ if ($1 == "l2_read_bytes") print $3 }' "$arcstats_file")
+	l2_write_bytes=$(awk '{ if ($1 == "l2_write_bytes") print $3 }' "$arcstats_file")
+
 	l2arc_stats=$(
 		printf "|L2ARC Size%s|%s\n" "$stat_name_suffix" "$l2arc_size"
 		printf "|L2ARC Size (compressed)%s|%s\n" "$stat_name_suffix" "$l2arc_size_compressed"
@@ -124,6 +128,9 @@ if [ "$l2arc_bytes" -ne 0 ]; then
 		else
 			printf "\n|L2ARC Hits|%s" "$l2_hits"
 			printf "\n|L2ARC Misses|%s" "$l2_misses"
+			printf "\n|L2ARC Header Size|%s" "$l2_header_size"
+			printf "\n|L2ARC Read Bytes|%s" "$l2_read_bytes"
+			printf "\n|L2ARC Write Bytes|%s" "$l2_write_bytes"
 		fi
 		printf "\n"
 	)
