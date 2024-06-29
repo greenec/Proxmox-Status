@@ -108,13 +108,14 @@ if [ "$l2arc_bytes" -ne 0 ]; then
 	l2arc_size=$($numfmt_bytes <<< "$l2arc_bytes" | sed -E "$iec_space_regexp")
 	l2arc_size_compressed=$(awk '{ if ($1 == "l2_asize") print $3 }' "$arcstats_file" | $numfmt_bytes | sed -E "$iec_space_regexp")
 
+	l2_header_size=$(awk '{ if ($1 == "l2_hdr_size") print $3 }' "$arcstats_file" | $numfmt_bytes | sed -E "$iec_space_regexp")
+
 	# calculate L2ARC hit ratio
 	l2_hits=$(awk '{ if ($1 == "l2_hits") print $3 }' "$arcstats_file")
 	l2_misses=$(awk '{ if ($1 == "l2_misses") print $3 }' "$arcstats_file")
 	total_l2_arc_requests=$(( l2_hits + l2_misses ))
 	l2arc_hit_ratio=$( bc <<< "scale=2; $l2_hits * 100 / $total_l2_arc_requests" )
 
-	l2_header_size=$(awk '{ if ($1 == "l2_hdr_size") print $3 }' "$arcstats_file")
 	l2_read_bytes=$(awk '{ if ($1 == "l2_read_bytes") print $3 }' "$arcstats_file")
 	l2_write_bytes=$(awk '{ if ($1 == "l2_write_bytes") print $3 }' "$arcstats_file")
 
@@ -125,10 +126,13 @@ if [ "$l2arc_bytes" -ne 0 ]; then
 		printf "|L2ARC Hit Ratio%s|%s" "$stat_name_suffix" "$l2arc_hit_ratio"
 		if [ "$print_raw" = false ]; then
 			printf " %%"
-		else
+		fi
+
+		printf "\n|L2ARC Header Size%s|%s" "$stat_name_suffix" "$l2_header_size"
+
+		if [ "$print_raw" = true ]; then
 			printf "\n|L2ARC Hits|%s" "$l2_hits"
 			printf "\n|L2ARC Misses|%s" "$l2_misses"
-			printf "\n|L2ARC Header Size|%s" "$l2_header_size"
 			printf "\n|L2ARC Read Bytes|%s" "$l2_read_bytes"
 			printf "\n|L2ARC Write Bytes|%s" "$l2_write_bytes"
 		fi
